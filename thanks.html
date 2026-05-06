@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card">
+  <span class="pill">제출 완료</span>
+  <h1 style="margin-top:12px;">감사합니다{% if name %}, {{ name }}{% endif %}님!</h1>
+  <p class="muted">응답이 저장되었습니다. 같은 이름으로 다시 제출하면 기존 응답이 덮어써집니다.</p>
+  <div class="inline-actions" style="margin-top:16px;"><a class="btn" href="{{ url_for('summary', token=poll['token']) }}">요약 결과 보기</a><a class="btn ghost" href="{{ url_for('poll_view', token=poll['token'], name=name) }}">내 응답 수정하기</a></div>
+</div>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card">
+  <span class="pill">링크 공유형 날짜 조율</span>
+  <h1 style="margin-top:12px;">모임 날짜 조율 링크 만들기</h1>
+  <p class="muted">참가자들은 이름을 입력하고, <strong>저녁 6시 회식이 어려운 날짜는 안됨</strong>, <strong>일찍 가거나 늦참만 가능한 날짜는 부분참여</strong>로 선택합니다. 요약 화면에서는 <strong>부분참여 0.5명</strong>으로 반영해 가장 유리한 날짜가 표시됩니다.</p>
+</div>
+<div class="card">
+  <form action="{{ url_for('create_poll') }}" method="post">
+    <div class="row">
+      <div class="field"><label>모임 제목</label><input type="text" name="title" value="회식 날짜 조율" required></div>
+      <div class="field"><label>시작일</label><input type="date" name="start_date" value="{{ default_start }}" required></div>
+      <div class="field"><label>종료일</label><input type="date" name="end_date" value="{{ default_end }}" required></div>
+    </div>
+    <div style="margin-top:16px;"><label>안내 문구</label><textarea name="note">{{ default_note }}</textarea></div>
+    <div style="margin-top:18px;"><button class="btn" type="submit">링크 만들기</button></div>
+  </form>
+</div>
+{% endblock %}

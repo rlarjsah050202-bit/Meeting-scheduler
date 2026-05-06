@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card">
+  <span class="pill">생성 완료</span>
+  <h1 style="margin-top:12px;">공유 링크가 만들어졌습니다</h1>
+  <p class="muted">아래 링크를 복사해서 단톡방이나 메신저에 공유하세요.</p>
+  <code class="link">{{ request.host_url[:-1] ~ url_for('poll_view', token=poll['token']) }}</code>
+  <div class="inline-actions" style="margin-top:16px;">
+    <a class="btn" href="{{ url_for('poll_view', token=poll['token']) }}">참여 페이지 열기</a>
+    <a class="btn ghost" href="{{ url_for('summary', token=poll['token']) }}">요약 결과 보기</a>
+    <a class="btn secondary" href="{{ url_for('home') }}">새 링크 만들기</a>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card">
+  <span class="pill">요약 결과</span>
+  <h1 style="margin-top:12px;">{{ poll['title'] }}</h1>
+  <p class="notice">{{ poll['note'] }}</p>
+  <p class="muted" style="margin-top:12px;">총 응답 인원: <strong>{{ participants }}명</strong> · 부분참여는 <strong>0.5명</strong>으로 계산됩니다.</p>
+</div>
+<div class="card">
+  <h2>가장 많은 사람이 가능한 날짜</h2>
+  {% if participants == 0 %}
+    <p class="muted">아직 응답이 없습니다. 먼저 링크를 공유해 보세요.</p>
+  {% else %}
+    <div class="summary-grid" style="margin-top:14px;">
+      {% for item in best_dates %}
+      <div class="summary-card best">
+        <div class="muted">추천 날짜</div>
+        <div style="font-weight:800; font-size:20px; margin:6px 0;">{{ item['date'].strftime('%Y-%m-%d') }}</div>
+        <div class="count">{{ '%.1f'|format(item['weighted']) }}명</div>
+        <div class="muted">환산 참여 인원</div>
+        <div class="muted" style="margin-top:8px;">가능 {{ item['full'] }}명 · 부분참여 {{ item['partial'] }}명 · 안됨 {{ item['unavailable'] }}명</div>
+      </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+</div>
+<div class="card">
+  <h2>날짜별 결과</h2>
+  <table class="table" style="margin-top:10px;">
+    <thead><tr><th>날짜</th><th>환산 참여 인원</th><th>가능</th><th>부분참여</th><th>안됨</th><th>비고</th></tr></thead>
+    <tbody>
+      {% for item in results %}
+      <tr>
+        <td>{{ item['date'].strftime('%Y-%m-%d') }}</td>
+        <td class="good">{{ '%.1f'|format(item['weighted']) }}명</td>
+        <td>{{ item['full'] }}명</td>
+        <td>{{ item['partial'] }}명</td>
+        <td>{{ item['unavailable'] }}명</td>
+        <td>{% if participants > 0 and best_dates and item['weighted'] == best_dates[0]['weighted'] %}최적 날짜{% endif %}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+<div class="card">
+  <h2>응답자 목록</h2>
+  {% if responders %}
+    <ul class="list">{% for person in responders %}<li>{{ person['name'] }} <span class="muted">({{ person['submitted_at'] }})</span></li>{% endfor %}</ul>
+  {% else %}
+    <p class="muted">아직 제출한 사람이 없습니다.</p>
+  {% endif %}
+  <div class="inline-actions" style="margin-top:16px;"><a class="btn" href="{{ url_for('poll_view', token=poll['token']) }}">응답 페이지</a><a class="btn secondary" href="{{ url_for('home') }}">새 링크 만들기</a></div>
+</div>
+{% endblock %}
