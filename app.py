@@ -292,6 +292,8 @@ def summary(token):
     return render_template('summary.html', poll=poll, participants=participants, best_dates=best_dates, results=results, responders=responders)
 
 
+init_db()
+
 if __name__ == '__main__':
-    init_db()
     app.run(debug=True)
+
